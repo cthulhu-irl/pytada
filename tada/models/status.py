@@ -1,19 +1,15 @@
 from abc import ABC, abstractmethod
 
 from .base import Model
-from ..serializers.base import SerializerBase
+from ..query.base import Comparable
 
-class StatusBase(ABC, SerializerBase):
+class StatusBase(ABC, Comparable, Model):
 
     @abstractmethod
     def __str__(self):
         pass
 
-    @abstractmethod
-    def __cmp__(self, other):
-        pass
-
-class Status(StatusBase, Model):
+class Status(StatusBase):
 
     def __init__(self, string):
         pass
@@ -24,11 +20,10 @@ class Status(StatusBase, Model):
     def __cmp__(self, other):
         pass
 
-    @classmethod
-    def serialize(cls, obj):
+    def to_raw(obj):
         pass
 
     @classmethod
-    def deserialize(cls, string):
+    def from_raw(cls, string):
         pass
 
