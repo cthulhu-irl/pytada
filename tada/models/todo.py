@@ -11,6 +11,7 @@ class Todo(Model):
     def to_raw(obj):
         pass
 
-    def from_raw(self, string):
+    @classmethod
+    def from_raw(cls, string):
         pass
 
