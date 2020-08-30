@@ -7,6 +7,9 @@ class Query(object):
 
     #-- syntactic sugar
 
+    def __call__(self, obj):
+        pass
+
     def __lshift__(self, query):
         pass
 
@@ -25,9 +28,6 @@ class Query(object):
         pass
 
     #-- functionality
-
-    def extend(self, query):
-        pass
 
     def then(self, selector):
         pass
