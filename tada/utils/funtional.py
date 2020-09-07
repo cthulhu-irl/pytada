@@ -1,10 +1,10 @@
 def identity(x):
     pass
 
-def compose(f, g, *args):
+def curry(f):
     pass
 
-def curry(f):
+def compose(f, g, *args):
     pass
 
 def fmap(fn, obj):
