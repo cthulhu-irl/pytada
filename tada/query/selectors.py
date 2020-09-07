@@ -1,24 +1,40 @@
+from functools import cmp_to_key
+
+from .functional import curry
+
+@curry(2)
 def forall(fn, arr):
-    pass
+    return all(fn(item) for item in arr)
 
+@curry(2)
 def select(fn, arr):
-    pass
+    return [item for item in arr if fn(item)]
 
+@curry(2)
 def filter(fn, arr):
-    pass
+    return [item for item in arr if not fn(item)]
 
+@curry(2)
 def offset(index, arr):
-    pass
+    return arr[index:]
 
+@curry(2)
 def limit(count, arr):
-    pass
+    return arr[:count]
 
+@curry(3)
 def slice(start, end, arr):
-    pass
+    return arr[start:end]
 
+@curry(2)
 def sort(fn, arr):
-    pass
+    return sorted(arr, key=cmp_to_key(fn))
 
 def unique(arr):
-    pass
+    unique_arr = []
+    for item in arr:
+        if item not in unique_arr:
+            unique_arr.append(item)
+
+    return unique_arr
 
