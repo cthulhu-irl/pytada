@@ -2,8 +2,11 @@ from .base import Model
 
 class Todo(Model):
 
-    def __init__(self):
-        pass
+    def __init__(self, status, title, info={}, sublist=[]):
+        self.status = status
+        self.title = title
+        self.info = info
+        self.sublist = sublist
 
     def __str__(self):
         pass
@@ -12,6 +15,6 @@ class Todo(Model):
         pass
 
     @classmethod
-    def from_raw(cls, string):
+    def from_raw(cls, raw):
         pass
 
