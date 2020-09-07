@@ -17,8 +17,14 @@ def curry(arg_count):
 
     return _decorator
 
+@curry(2)
 def compose(f, g, *fns):
-    pass
+    def _composer(*args, **kwargs):
+        if fns:
+            first, *rest = fns
+            g = compose(g, first, *rest)
+
+        return f(g(*args, **kwargs))
 
 def fmap(fn, obj):
     return obj.map(fn)
