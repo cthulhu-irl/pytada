@@ -1,5 +1,5 @@
 from ..utils.funcional import identity
-from .constraints import and_fn, or_fn, xor_fn
+from ..utils.general import and_fn, or_fn, xor_fn
 
 class Query(object):
 
