@@ -1,5 +1,5 @@
 def identity(x):
-    pass
+    return x
 
 def curry(f):
     pass
@@ -8,4 +8,4 @@ def compose(f, g, *fns):
     pass
 
 def fmap(fn, obj):
-    pass
+    return obj.map(fn)
