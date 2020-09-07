@@ -22,7 +22,7 @@ class Constraint(object):
     #-- functor
 
     def map(self, fn):
-        return Constraint(fn(self.fn))
+        return self.__class__(fn(self.fn))
 
     def join(self):
         return self.fn

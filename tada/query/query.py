@@ -26,7 +26,7 @@ class Query(object):
     #-- functor
 
     def map(self, fn):
-        return Query(fn(self.fn))
+        return self.__class__(fn(self.fn))
 
     def join(self):
         return self.fn
