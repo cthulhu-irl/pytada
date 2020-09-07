@@ -13,3 +13,12 @@ def offset(index, arr):
 def limit(count, arr):
     pass
 
+def slice(start, end, arr):
+    pass
+
+def sort(fn, arr):
+    pass
+
+def unique(arr):
+    pass
+
