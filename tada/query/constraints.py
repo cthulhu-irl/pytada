@@ -1,29 +1,45 @@
+from ..utils.general import and_fn, or_fn, xor_fn
+
 class Constraint(object):
 
-    def __init__(self, fn, *args, **kwargs):
-        pass
+    def __init__(self, fn):
+        self.fn = fn
 
-    def __call__(self, obj):
-        pass
+    #-- syntactic sugar
+
+    def __call__(self, *args, **kwargs):
+        return self.match(*args, **kwargs)
 
     def __and__(self, other):
-        return self.and(other)
+        return self.and_(other)
 
     def __or__(self, other):
-        return self.or(other)
+        return self.or_(other)
 
     def __xor__(self, other):
-        return self.xor(other)
+        return self.xor_(other)
 
-    def match(self, obj):
-        pass
+    #-- functor
 
-    def and(self, other):
-        pass
+    def map(self, fn):
+        return Constraint(fn(self.fn))
 
-    def or(self, other):
-        pass
+    def join(self):
+        return self.fn
 
-    def xor(self, other):
-        pass
+    #-- functionality
+
+    def match(self, *args, **kwargs):
+        return self.fn(*args, **kwargs)
+
+    #-- logical combinations
+
+    def and_(self, other):
+        return self.map(lambda f: and_fn(f, other))
+
+    def or_(self, other):
+        return self.map(lambda f: or_fn(f, other))
+
+    def xor_(self, other):
+        return self.map(lambda f: xor_fn(f, other))
 
