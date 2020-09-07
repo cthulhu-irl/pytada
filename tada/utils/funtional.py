@@ -1,7 +1,7 @@
 def identity(x):
     pass
 
-def compose(f, *args):
+def compose(f, g, *args):
     pass
 
 def curry(f):
