@@ -7,3 +7,5 @@ def compose(f, *args):
 def curry(f):
     pass
 
+def fmap(fn, obj):
+    pass
