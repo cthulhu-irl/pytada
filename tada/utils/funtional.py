@@ -26,5 +26,6 @@ def compose(f, g, *fns):
 
         return f(g(*args, **kwargs))
 
+@curry(2)
 def fmap(fn, obj):
     return obj.map(fn)
