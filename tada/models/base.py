@@ -1,3 +1,5 @@
+import json
+
 from ..conversion import RAWConvertible, JSONConvertible
 
 class ConvertibleModel(RAWConvertible, JSONConvertible):
@@ -7,11 +9,11 @@ class ConvertibleModel(RAWConvertible, JSONConvertible):
     """
 
     def to_json(obj):
-        pass
+        return json.dumps(obj.to_raw())
 
     @classmethod
     def from_json(cls, string):
-        pass
+        return cls.from_raw(json.loads(string))
 
 class Model(ConvertibleModel):
     pass
