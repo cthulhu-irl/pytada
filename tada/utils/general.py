@@ -1,5 +1,17 @@
 from .functional import identity, curry
 
+@curry(3)
+def and_fn(fx, fy, a, *args, **kwargs):
+    return fx(a, *args, **kwargs) and fy(a, *args, **kwargs)
+
+@curry(3)
+def or_fn(fx, fy, a, *args, **kwargs):
+    return fx(a, *args, **kwargs) or fy(a, *args, **kwargs)
+
+@curry(3)
+def xor_fn(fx, fy, a, *args, **kwargs):
+    return fx(a, *args, **kwargs) != fy(a, *args, **kwargs)
+
 @curry(2)
 def prop(attr, obj):
     return getattr(attr, obj)
