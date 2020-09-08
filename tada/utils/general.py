@@ -8,13 +8,6 @@ def and_fn(fx, fy, a, *args, **kwargs):
 def or_fn(fx, fy, a, *args, **kwargs):
     return fx(a, *args, **kwargs) or fy(a, *args, **kwargs)
 
-@curry(3)
-def xor_fn(fx, fy, a, *args, **kwargs):
-    x = bool(fx(a, *args, **kwargs))
-    y = bool(fy(a, *args, **kwargs))
-
-    return x != y
-
 @curry(2)
 def prop(attr, obj):
     return getattr(attr, obj)

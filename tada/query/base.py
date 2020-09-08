@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from ..utils.general import and_fn, or_fn, xor_fn
+from ..utils.general import and_fn, or_fn
 
 class Comparable(ABC):
 
@@ -16,15 +16,8 @@ class LogicallyComposible(object):
     def __or__(self, fn):
         return self.or_(fn)
 
-    def __xor__(self, fn):
-        return self.xor_(fn)
-
     def and_(self, fn):
         return self.map(lambda f: and_fn(f, fn))
 
     def or_(self, fn):
         return self.map(lambda f: or_fn(f, fn))
-
-    def xor_(self, fn):
-        return self.map(lambda f: xor_fn(f, fn))
-
