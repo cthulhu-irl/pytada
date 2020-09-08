@@ -16,7 +16,10 @@ class Todo(Model):
         self.sublist = sublist
 
     def __str__(self):
-        return '{} {}'.format(self.status, self.title)
+        return '{} {} - {} info,  {} sublist'.format(
+            self.status, self.title,
+            len(self.info.keys()), len(self.sublist)
+        )
 
     def to_raw(obj):
         return {
