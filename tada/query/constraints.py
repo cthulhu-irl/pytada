@@ -1,6 +1,6 @@
-from ..utils.general import and_fn, or_fn, xor_fn
+from .base import LogicallyComposible
 
-class Constraint(object):
+class Constraint(LogicallyComposible):
     '''
     logically composable contraint wrapper by infix operators.
     '''
@@ -12,15 +12,6 @@ class Constraint(object):
 
     def __call__(self, *args, **kwargs):
         return self.match(*args, **kwargs)
-
-    def __and__(self, other):
-        return self.and_(other)
-
-    def __or__(self, other):
-        return self.or_(other)
-
-    def __xor__(self, other):
-        return self.xor_(other)
 
     #-- functor
 
@@ -37,30 +28,3 @@ class Constraint(object):
         calls beneath constraint function and returns result.
         '''
         return self.fn(*args, **kwargs)
-
-    #-- logical combinations
-
-    def and_(self, other):
-        '''
-        compose with another constraint by and logical function.
-        it is same as and_fn(self, other) but returning
-        a constraint instance.
-        '''
-        return self.map(lambda f: and_fn(f, other))
-
-    def or_(self, other):
-        '''
-        compose with another constraint by or logical function.
-        it is same as or_fn(self, other) but returning
-        a constraint instance.
-        '''
-        return self.map(lambda f: or_fn(f, other))
-
-    def xor_(self, other):
-        '''
-        compose with another constraint by xor logical function.
-        it is same as xor_fn(self, other) but returning
-        a constraint instance.
-        '''
-        return self.map(lambda f: xor_fn(f, other))
-

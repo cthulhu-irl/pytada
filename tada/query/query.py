@@ -1,7 +1,7 @@
+from .base import LogicallyComposible
 from ..utils.funcional import identity
-from ..utils.general import and_fn, or_fn, xor_fn
 
-class Query(object):
+class Query(LogicallyComposible):
 
     def __init__(self, selector=identity):
         self.fn = selector
@@ -13,15 +13,6 @@ class Query(object):
 
     def __lshift__(self, selector):
         return self.then(query)
-
-    def __and__(self, selector):
-        return self.and_(selector)
-
-    def __or__(self, selector):
-        return self.or_(selector)
-
-    def __xor__(self, selector):
-        return self.xor_(selector)
 
     #-- functor
 
@@ -38,15 +29,4 @@ class Query(object):
 
     def query(self, obj):
         return self.fn(obj)
-
-    #-- helpers
-
-    def and_(self, selector):
-        return self.map(lambda fn: and_fn(fn, selector))
-
-    def or_(self, selector):
-        return self.map(lambda fn: or_fn(fn, selector))
-
-    def xor_(self, selector):
-        return self.map(lambda fn: xor_fn(fn, selector))
 
