@@ -21,6 +21,22 @@ class Todo(Model):
             len(self.info.keys()), len(self.sublist)
         )
 
+    def fix_status(todo):
+        if not todo.sublist:
+            return todo
+
+        todo.sublist = [
+            fix_status(child) for child in todo.sublist
+        ]
+
+        for i in range(len(todo.sublist)-1):
+            if todo.sublist[i].status != todo.sublist[i+1].status:
+                todo.status = Status(Status.DOING)
+
+        todo.status = todo.sublist[0].status
+
+        return todo
+
     def to_raw(obj):
         return {
             obj.Repr.STATUS: str(obj.status),

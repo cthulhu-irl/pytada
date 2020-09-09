@@ -20,5 +20,3 @@ def apply_if_else(constraint, if_fn, else_fn, obj):
 def apply_if(constraint, fn, obj):
     return apply_if_else(constraint, fn, identity, obj)
 
-def fix_status(todo):
-    pass
