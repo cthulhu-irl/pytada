@@ -1,6 +1,6 @@
-from .base import LogicallyComposible
+from .base import LogicallyComposable
 
-class Constraint(LogicallyComposible):
+class Constraint(LogicallyComposable):
     '''
     logically composable contraint wrapper by infix operators.
     '''

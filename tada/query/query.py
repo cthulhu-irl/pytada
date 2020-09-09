@@ -1,7 +1,7 @@
-from .base import LogicallyComposible
+from .base import LogicallyComposable
 from ..utils.funcional import identity
 
-class Query(LogicallyComposible):
+class Query(LogicallyComposable):
 
     def __init__(self, selector=identity):
         self.fn = selector

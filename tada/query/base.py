@@ -8,7 +8,7 @@ class Comparable(ABC):
     def __cmp__(self, other):
         pass
 
-class LogicallyComposible(object):
+class LogicallyComposable(object):
 
     def __and__(self, fn):
         return self.and_(fn)
