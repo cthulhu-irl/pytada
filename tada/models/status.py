@@ -10,6 +10,9 @@ class StatusBase(ABC, Comparable, Model):
         pass
 
 class Status(StatusBase):
+    TODO = 0
+    DOING = 1
+    DONE = 2
     STRINGS = ['-', 'x', '+']
 
     def __init__(self, stat):
