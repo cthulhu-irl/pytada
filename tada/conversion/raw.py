@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class RAWConvertible(ABC):
+class RAWConvertable(ABC):
 
     @abstractmethod
     def to_raw(obj):

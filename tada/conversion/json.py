@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class JSONConvertible(ABC):
+class JSONConvertable(ABC):
 
     @abstractmethod
     def to_json(obj):

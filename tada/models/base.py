@@ -1,8 +1,8 @@
 import json
 
-from ..conversion import RAWConvertible, JSONConvertible
+from ..conversion import RAWConvertable, JSONConvertable
 
-class ConvertibleModel(RAWConvertible, JSONConvertible):
+class ConvertableModel(RAWConvertable, JSONConvertable):
     """
     mixin json conversion,
     uses raw conversion implementation by derived classes
@@ -15,6 +15,6 @@ class ConvertibleModel(RAWConvertible, JSONConvertible):
     def from_json(cls, string):
         return cls.from_raw(json.loads(string))
 
-class Model(ConvertibleModel):
+class Model(ConvertableModel):
     pass
 
