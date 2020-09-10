@@ -3,13 +3,22 @@ from abc import ABC, abstractmethod
 from .base import Model
 from ..query.base import Comparable
 
+
 class StatusBase(ABC, Comparable, Model):
+    """ abstract comparable status model class """
 
     @abstractmethod
     def __str__(self):
         pass
 
+
 class Status(StatusBase):
+    """
+    status model with 3 states of todo, doing and done
+    with string representation of -, x and +
+    respectively
+    """
+
     TODO = 0
     DOING = 1
     DONE = 2
@@ -41,4 +50,3 @@ class Status(StatusBase):
     @classmethod
     def from_raw(cls, string):
         return cls(string)
-

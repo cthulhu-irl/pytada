@@ -1,12 +1,13 @@
 from .base import Model
 from .status import Status
 
+
 class Todo(Model):
 
     class Repr:
-        STATUS  = 'status'
-        TITLE   = 'title'
-        INFO    = 'info'
+        STATUS = 'status'
+        TITLE = 'title'
+        INFO = 'info'
         SUBLIST = 'sublist'
 
     def __init__(self, status, title, info={}, sublist=[]):
@@ -22,11 +23,25 @@ class Todo(Model):
         )
 
     def fix_status(todo):
+        """
+        fixes the status of the given todo and its sublist todos
+        according to these rules:
+        - a todo's status is determined by its sublist todo,
+          unless its sublist is empty,
+          then its status is as given.
+
+        - a todo's status is the same as any of its sublist
+          if all of its sublist have the same status
+
+        - a todo's status is 'doing' if any of its sublist
+          have a different status of another
+        """
+
         if not todo.sublist:
             return todo
 
         todo.sublist = [
-            fix_status(child) for child in todo.sublist
+            child.fix_status() for child in todo.sublist
         ]
 
         for i in range(len(todo.sublist)-1):
@@ -53,7 +68,6 @@ class Todo(Model):
         return cls(
             Status(raw[cls.Repr.STATUS]),
             str(raw[cls.Repr.TITLE]),
-            raw[obj.Repr.INFO],
+            raw[cls.Repr.INFO],
             [cls.from_raw(child) for child in sublist]
         )
-

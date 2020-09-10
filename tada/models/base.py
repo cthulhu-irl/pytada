@@ -2,6 +2,7 @@ import json
 
 from ..conversion import RAWConvertable, JSONConvertable
 
+
 class ConvertableModel(RAWConvertable, JSONConvertable):
     """
     mixin json conversion,
@@ -15,6 +16,6 @@ class ConvertableModel(RAWConvertable, JSONConvertable):
     def from_json(cls, string):
         return cls.from_raw(json.loads(string))
 
+
 class Model(ConvertableModel):
     pass
-
