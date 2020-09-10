@@ -1,19 +1,20 @@
 from .base import LogicallyComposable
 
+
 class Constraint(LogicallyComposable):
-    '''
+    """
     logically composable contraint wrapper by infix operators.
-    '''
+    """
 
     def __init__(self, fn):
         self.fn = fn
 
-    #-- syntactic sugar
+    # syntactic sugar
 
     def __call__(self, *args, **kwargs):
         return self.match(*args, **kwargs)
 
-    #-- functor
+    # functor
 
     def map(self, fn):
         return self.__class__(fn(self.fn))
@@ -21,10 +22,10 @@ class Constraint(LogicallyComposable):
     def join(self):
         return self.fn
 
-    #-- functionality
+    # functionality
 
     def match(self, *args, **kwargs):
-        '''
+        """
         calls beneath constraint function and returns result.
-        '''
+        """
         return self.fn(*args, **kwargs)
