@@ -35,6 +35,10 @@ class Status(StatusBase):
             self.string = self.STRINGS[stat]
             self.index = stat
 
+        elif isinstance(stat, Status):
+            self.string = stat.string
+            self.index = stat.index
+
         else:
             raise ValueError(
                 'given `stat` is not an Status representative'
@@ -44,7 +48,7 @@ class Status(StatusBase):
         return self.string
 
     def __cmp__(self, other):
-        return self.index.__cmp__(other.index)
+        return self.index - other.index
 
     def to_raw(obj):
         return str(obj)
