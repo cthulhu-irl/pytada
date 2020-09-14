@@ -17,7 +17,13 @@ def curry(arg_count):
             fn_kwargs.update(kwargs)
 
             if len(fn_args) >= arg_count:
-                return fn(*fn_args, **fn_kwargs)
+                cp_args = fn_args[:]
+                cp_kwargs = fn_kwargs.copy()
+
+                fn_args.clear()
+                fn_kwargs.clear()
+
+                return fn(*cp_args, **cp_kwargs)
 
             return _currier
 
@@ -37,14 +43,13 @@ def compose(f, g, *fns):
     then the result is returned.
     """
 
-    def _composer(*args, **kwargs):
-        if fns:
-            first, *rest = fns
-            return f(compose(g, first, *rest)(*args, **kwargs))
+    for fn in fns:
+        g = compose(g, fn)
 
+    def _composed(*args, **kwargs):
         return f(g(*args, **kwargs))
 
-    return _composer
+    return _composed
 
 
 @curry(2)
