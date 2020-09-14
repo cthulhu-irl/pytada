@@ -3,9 +3,9 @@ import pytest
 from tada.models.status import Status
 
 def test_string_conversion():
-    assert int(Status(Status.STRINGS[0])) == 0
-    assert int(Status(Status.STRINGS[1])) == 1
-    assert int(Status(Status.STRINGS[2])) == 2
+    assert Status(Status.STRINGS[0]).index == 0
+    assert Status(Status.STRINGS[1]).index == 1
+    assert Status(Status.STRINGS[2]).index == 2
 
 def test_int_conversion():
     assert str(Status(Status.TODO)) == Status.STRINGS[0]
