@@ -1,6 +1,6 @@
 from functools import cmp_to_key
 
-from .functional import curry
+from ..utils.functional import curry
 
 
 @curry(2)
