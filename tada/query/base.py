@@ -4,7 +4,25 @@ from ..utils.general import and_fn, or_fn
 
 
 class Comparable(ABC):
-    """ comparable interface """
+    """ comparable mixin """
+
+    def __lt__(self, other):
+        return self.__cmp__(other) < 0
+
+    def __le__(self, other):
+        return self.__cmp__(other) <= 0
+
+    def __eq__(self, other):
+        return self.__cmp__(other) == 0
+
+    def __ne__(self, other):
+        return self.__cmp__(other) != 0
+
+    def __ge__(self, other):
+        return self.__cmp__(other) >= 0
+
+    def __gt__(self, other):
+        return self.__cmp__(other) > 0
 
     @abstractmethod
     def __cmp__(self, other):
