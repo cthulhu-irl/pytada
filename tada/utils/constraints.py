@@ -1,3 +1,5 @@
+import re
+
 from .functional import curry
 
 
@@ -32,7 +34,7 @@ def ends_with(sub, lst):
 
 @curry(2)
 def regex_match(regex, string):
-    pass
+    return bool(re.match(regex, string))
 
 
 # -- comparison constraints
