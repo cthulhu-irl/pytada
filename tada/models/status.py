@@ -1,10 +1,10 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from .base import Model
 from ..query.base import Comparable
 
 
-class StatusBase(ABC, Comparable, Model):
+class StatusBase(Comparable, Model):
     """ abstract comparable status model class """
 
     @abstractmethod
