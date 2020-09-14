@@ -19,6 +19,8 @@ def curry(arg_count):
             if len(fn_args) >= arg_count:
                 return fn(*fn_args, **fn_kwargs)
 
+            return _currier
+
         return _currier
 
     return _decorator
