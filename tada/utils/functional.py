@@ -8,26 +8,31 @@ def identity(x):
 
 def curry(arg_count):
     """ function decorator for currying function's arguments """
-    fn_args = []
-    fn_kwargs = {}
 
     def _decorator(fn):
-        def _currier(*args, **kwargs):
-            fn_args.extend(args)
-            fn_kwargs.update(kwargs)
 
-            if len(fn_args) >= arg_count:
-                cp_args = fn_args[:]
-                cp_kwargs = fn_kwargs.copy()
+        def _holder(*args, **kwargs):
+            fn_args = []
+            fn_kwargs = {}
 
-                fn_args.clear()
-                fn_kwargs.clear()
+            def _currier(*args, **kwargs):
+                fn_args.extend(args)
+                fn_kwargs.update(kwargs)
 
-                return fn(*cp_args, **cp_kwargs)
+                if len(fn_args) >= arg_count:
+                    cp_args = fn_args[:]
+                    cp_kwargs = fn_kwargs.copy()
 
-            return _currier
+                    fn_args.clear()
+                    fn_kwargs.clear()
 
-        return _currier
+                    return fn(*cp_args, **cp_kwargs)
+
+                return _currier
+
+            return _currier(*args, **kwargs)
+
+        return _holder
 
     return _decorator
 
