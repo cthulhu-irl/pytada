@@ -12,6 +12,12 @@ def test_curry():
     assert curry(3)(fn)(1)(2)(3) == fn(1, 2, 3)
     assert curry(3)(fn)(1, 2)(3) == fn(1, 2, 3)
 
+    fm = curry(3)(fn)
+    fx = fm(1, 2)
+    fy = fm(3, 4)
+    assert fx(3) == fn(1, 2, 3)
+    assert fy(5) == fn(3, 4, 5)
+
 def test_compose():
     fn = lambda a: a ** 2
     fx = compose(fn, identity)
