@@ -1,6 +1,6 @@
 import re
 
-from ..utils.functional import curry
+from .functional import curry
 
 
 # -- string/array related constraints
