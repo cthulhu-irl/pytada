@@ -22,6 +22,19 @@ class Todo(Model):
             len(self.info.keys()), len(self.sublist)
         )
 
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __eq__(self, other):
+        ret = self.status == other.status
+        ret = ret and self.title == other.title
+        ret = ret and self.info == other.info
+
+        if ret and (self.sublist or other.sublist):
+            ret = self.sublist == other.sublist
+
+        return ret
+
     def fix_status(todo):
         """
         fixes the status of the given todo and its sublist todos
