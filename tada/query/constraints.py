@@ -15,7 +15,7 @@ def contains(element, lst):
 @Constraint
 @curry(2)
 def intersects(lst1, lst2):
-    return all(elem in lst2 for elem in lst1)
+    return any(elem in lst2 for elem in lst1)
 
 
 @Constraint
