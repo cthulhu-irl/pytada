@@ -1,5 +1,5 @@
 from tada.query import constraints as cs
-from tada.query.constraint import Constraint
+from tada.query.constraint import Constraint as C
 
 def test_intersects():
     assert cs.intersects(['b', 'c', 'g'], 'abcd')
@@ -45,10 +45,10 @@ def test_ends_with():
     assert not cs.ends_with([1, 3], [1, 2, 3])
 
 def test_and_composition():
-    contains = Constraint(cs.contains)
+    contains = cs.contains
 
-    contains_ab = contains('a') & contains('b')
-    contains_ef = contains('e') & contains('f')
+    contains_ab = C(contains('a')) & C(contains('b'))
+    contains_ef = C(contains('e')) & C(contains('f'))
 
     obj = 'abcd'
 
@@ -59,10 +59,10 @@ def test_and_composition():
     assert result == contains_ef(obj)
 
 def test_or_composition():
-    contains = Constraint(cs.contains)
+    contains = cs.contains
 
-    contains_ef = contains('e') | contains('f')
-    contains_ed = contains('e') | contains('d')
+    contains_ef = C(contains('e')) | C(contains('f'))
+    contains_ed = C(contains('e')) | C(contains('d'))
 
     obj = 'abcd'
 
