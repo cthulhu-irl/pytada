@@ -12,9 +12,13 @@ def test_curry():
     assert curry(3)(fn)(1)(2)(3) == fn(1, 2, 3)
     assert curry(3)(fn)(1, 2)(3) == fn(1, 2, 3)
 
+def test_curry_independent_calls():
+    fn = lambda a, b, c: a * b * c
     fm = curry(3)(fn)
+
     fx = fm(1, 2)
     fy = fm(3, 4)
+
     assert fx(3) == fn(1, 2, 3)
     assert fy(5) == fn(3, 4, 5)
 
