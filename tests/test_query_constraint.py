@@ -1,4 +1,4 @@
-from tada.query import constraints as cs
+from tada.utils import constraints as cs
 from tada.query.constraint import Constraint as C
 
 def test_intersects():
