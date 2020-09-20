@@ -1,5 +1,5 @@
 from .base import LogicallyComposable
-from ..utils.funcional import identity, compose
+from ..utils.functional import identity, compose
 
 
 class Query(LogicallyComposable):
