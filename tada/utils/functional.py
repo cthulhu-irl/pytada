@@ -1,5 +1,4 @@
-""" functional programming utilities """
-
+from functools import wraps
 
 def identity(x):
     """ always return what's given """
@@ -11,10 +10,12 @@ def curry(arg_count):
 
     def _decorator(fn):
 
+        @wraps(fn)
         def _holder(*args, **kwargs):
             fn_args = []
             fn_kwargs = {}
 
+            @wraps(fn)
             def _currier(*args, **kwargs):
                 fn_args.extend(args)
                 fn_kwargs.update(kwargs)
