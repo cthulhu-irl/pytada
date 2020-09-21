@@ -5,12 +5,12 @@ from tada.utils.selectors import select, filter, offset, limit
 from tada.utils.constraints import contains, starts_with
 
 handlers = {
-    'OR': (Q.or_, Q),
-    'AND': (Q.and_, Q),
-    'offset': (offset, int),
-    'limit': (limit, int),
-    'startswith': (compose(select, starts_with), identity),
-    'filter': (compose(filter, contains), identity)
+    'OR': (Q.or_, True),
+    'AND': (Q.and_, True),
+    'offset': (compose(offset, int), False),
+    'limit': (compose(limit, int), False),
+    'startswith': (compose(select, starts_with), False),
+    'filter': (compose(filter, contains), False)
 }
 qf = QueryFactory(handlers)
 
