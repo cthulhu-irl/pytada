@@ -30,7 +30,9 @@ class QueryFactory(object):
         delim = self.DELIMITER
 
         if delim in s and s.index(delim) == s.rindex(delim):
-            return s.split(delim)
+            ret = s.split(delim)
+            if not self._isinfix(ret[0]):
+                return ret
 
         return (s, s)
 
@@ -48,6 +50,9 @@ class QueryFactory(object):
         default handler.
         """
         return self.registry.get(fname, self.default)
+
+    def _isinfix(self, fname):
+        return self._get_handler(fname)[1]
 
     def _infix_list_composer(
         self,
@@ -71,7 +76,7 @@ class QueryFactory(object):
 
         if isinfix:
             sogoing = self._infix_list_composer(
-                rest, depth=depth-1
+                rest, Q(identity), depth=depth-1
             )
             return Q(fn(sofar, sogoing))
 
