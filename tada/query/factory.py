@@ -44,7 +44,11 @@ class QueryFactory(object):
 
     def _isinfix(self, x):
         """ checks if given x is an infix string """
-        return isinstance(x, str) and x in self.registry
+        return (
+            isinstance(x, str)
+            and self.DELIMITER not in x
+            and x in self.registry
+        )
 
     def _get_handler(self, fname):
         """
@@ -58,7 +62,7 @@ class QueryFactory(object):
     def _infix_list_composer(
         self,
         lst,
-        sofar=identity,
+        sofar,
         *,
         depth=100
     ):
@@ -90,11 +94,12 @@ class QueryFactory(object):
 
         if self._isinfix(first):
             sogoing = self._infix_list_composer(
-                rest, identity, depth=depth-1
+                rest, Q(identity), depth=depth-1
             )
-            return fn(ft(sofar), ft(sogoing))
+            return Q(fn(ft(sofar), ft(sogoing)))
 
-        sofar = compose(sofar, fn(ft(first[1])))
+        fx = compose(fn, ft)
+        sofar = sofar.then(fx(first[1]))
 
         return self._infix_list_composer(
             rest, sofar, depth=depth-1
@@ -115,6 +120,8 @@ class QueryFactory(object):
         """ makes a Query out of given query string """
         lst = map(lambda s: s.strip(), string.split())
         lst = map(self._parse_clause, lst)
-        f = self._infix_list_composer(lst, depth=self.max_depth)
+        f = self._infix_list_composer(
+            lst, Q(identity), depth=self.max_depth
+        )
 
         return Q(f)
