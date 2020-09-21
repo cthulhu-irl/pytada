@@ -14,22 +14,26 @@ class curry(object):
 
     def __call__(self, fn):
         self.fn = fn
-        return self.currier
+
+        @wraps(fn)
+        def currier(*args, **kwargs):
+            arity = self.arity - len(args)
+
+            fargs = list(self.args[:])
+            fkwargs = self.kwargs.copy()
+
+            fargs.extend(args)
+            fkwargs.update(kwargs)
+
+            if arity <= 0:
+                return self.fn(*fargs, **fkwargs)
+
+            return self.of(self.fn, arity, *fargs, **fkwargs)
+
+        return currier
 
     def of(self, fn, arity, *args, **kwargs):
         return self.__class__(arity, *args, **kwargs)(fn)
-
-    def currier(self, *args, **kwargs):
-        args = list(args)
-        arity = self.arity - len(args)
-
-        args.extend(self.args)
-        kwargs.update(self.kwargs)
-
-        if arity <= 0:
-            return self.fn(*args, **kwargs)
-
-        return self.of(self.fn, arity, *args, **kwargs)
 
 
 @curry(2)
