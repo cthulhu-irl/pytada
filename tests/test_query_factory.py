@@ -1,12 +1,12 @@
 from tada.query.query import Query as Q
 from tada.query.factory import QueryFactory
-from tada.utils.functional import identity, compose
+from tada.utils.functional import identity, curry, compose
 from tada.utils.selectors import select, filter, offset, limit
 from tada.utils.constraints import contains, starts_with
 
+sum2 = curry(3)(lambda fx, fy, lst: fx(lst) + fy(lst))
 handlers = {
-    'OR': (Q.or_, True),
-    'AND': (Q.and_, True),
+    'OR': (sum2, True),
     'offset': (compose(offset, int), False),
     'limit': (compose(limit, int), False),
     'startswith': (compose(select, starts_with), False),
@@ -15,10 +15,9 @@ handlers = {
 qf = QueryFactory(handlers)
 
 def test_fromstr_default():
-    q = qf.fromstr('x or y')
+    q = qf.fromstr('x y')
     assert q(['a', 'b', 'c']) == []
-    assert q(['x', 'b', 'x']) == ['x', 'x']
-    assert q(['x', 'y', 'or']) == ['x', 'y', 'or']
+    assert q(['x y', 'y b x', 'x b']) == ['x y', 'y b x']
 
 def test_fromstr_infix():
     q = qf.fromstr('x OR y')
@@ -33,8 +32,9 @@ def test_fromstr_fall_type_error_to_default():
 
 def test_fromstr_infix_with_parameter():
     q = qf.fromstr('a OR:2 b')
-    assert q(['a', 'c']) == ['a']
-    assert q(['c', 'b']) == ['b']
+    assert q(['a x OR:2 c b', 'a b']) == ['a x OR:2 c b']
+    assert q(['a', 'c']) != ['a']
+    assert q(['c', 'b']) != ['b']
     assert q(['c', 'OR:2']) != ['OR:2']
 
 def test_fromstr_order():
