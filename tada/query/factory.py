@@ -25,19 +25,20 @@ class QueryFactory(object):
         """
         if given string has only one delimiter,
         divides it and returns,
-        otherwise if it's not infix,
-        returns a tuple containing two copies of the string,
-        otherwise returns it as a (infix) string.
+        otherwise returns a tuple containing two of the string.
         """
         delim = self.DELIMITER
 
         if delim in s and s.index(delim) == s.rindex(delim):
             return s.split(delim)
 
-        if s in self.registry:
-            return (s, '')
-
         return (s, s)
+
+    def _reclause(self, a, b):
+        """
+        makes a string clause out of a and b with delimiter
+        """
+        return f'{a}{self.DELIMITER}{b}'
 
     def _get_handler(self, fname):
         """
@@ -60,17 +61,6 @@ class QueryFactory(object):
         ones with parameter together and calls the ones
         which are infix by composed left ones and composed
         right ones and returns the result of that call.
-
-        takes a list of clauses, if not infix,
-        then calls them with given parameter after
-        converting it by given type converter in registry
-        and composes them,
-        otherwise, recurses on the rest of the list
-        to get the right operand evaluated (right selector)
-        and then converts the left and right selectors/operands
-        by given type converter in registry,
-        then calls the infix function with those
-        converted operands and returns the result.
         """
 
         if not lst or depth <= 0:
@@ -85,7 +75,12 @@ class QueryFactory(object):
             )
             return Q(fn(sofar, sogoing))
 
-        sofar = sofar.then(fn(farg))
+        try:
+            fx = fn(farg)
+        except Exception:
+            fx = self.default(self._reclause(fname, farg))
+
+        sofar = sofar.then(fx)
 
         return self._infix_list_composer(
             rest, sofar, depth=depth-1
