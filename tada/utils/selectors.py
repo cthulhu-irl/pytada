@@ -29,9 +29,11 @@ def filter(fn, arr):
 
 
 @curry(2)
-def offset(index, arr):
-    """ returns arr[index:] """
-    return arr[index:]
+def offset(count, arr):
+    """
+    returns arr[count-1:], so counting from 1 instead of 0
+    """
+    return arr[count-1:]
 
 
 @curry(2)
