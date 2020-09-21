@@ -15,8 +15,8 @@ class QueryFactory(object):
 
     def __init__(self, registry={}, default=None):
         self.registry = registry.copy()
-        self.default = (
-            default or compose(select, contains),
+        self.default = default or (
+            compose(select, contains),
             False
         )
         self.max_depth = 1000
