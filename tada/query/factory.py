@@ -17,7 +17,7 @@ class QueryFactory(object):
         self.registry = registry.copy()
         self.default = (
             default or compose(select, contains),
-            identity
+            False
         )
         self.max_depth = 1000
 
@@ -78,7 +78,7 @@ class QueryFactory(object):
         try:
             fx = fn(farg)
         except Exception:
-            fx = self.default(self._reclause(fname, farg))
+            fx = self.default[0](self._reclause(fname, farg))
 
         sofar = sofar.then(fx)
 
