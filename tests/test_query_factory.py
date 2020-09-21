@@ -17,7 +17,7 @@ qf = QueryFactory(handlers)
 def test_fromstr_default():
     q = qf.fromstr('x or y')
     assert q(['a', 'b', 'c']) == []
-    assert q(['x', 'y', 'x']) == []
+    assert q(['x', 'b', 'x']) == ['x', 'x']
     assert q(['x', 'y', 'or']) == ['x', 'y', 'or']
 
 def test_fromstr_infix():
