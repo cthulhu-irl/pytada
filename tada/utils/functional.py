@@ -5,37 +5,31 @@ def identity(x):
     return x
 
 
-def curry(arg_count):
-    """ function decorator for currying function's arguments """
+class curry(object):
 
-    def _decorator(fn):
+    def __init__(self, arity, *args, **kwargs):
+        self.arity = arity
+        self.args = args
+        self.kwargs = kwargs
 
-        @wraps(fn)
-        def _holder(*args, **kwargs):
-            fn_args = []
-            fn_kwargs = {}
+    def __call__(self, fn):
+        self.fn = fn
+        return self.currier
 
-            @wraps(fn)
-            def _currier(*args, **kwargs):
-                fn_args.extend(args)
-                fn_kwargs.update(kwargs)
+    def of(self, fn, arity, *args, **kwargs):
+        return self.__class__(arity, *args, **kwargs)(fn)
 
-                if len(fn_args) >= arg_count:
-                    cp_args = fn_args[:]
-                    cp_kwargs = fn_kwargs.copy()
+    def currier(self, *args, **kwargs):
+        args = list(args)
+        arity = self.arity - len(args)
 
-                    fn_args.clear()
-                    fn_kwargs.clear()
+        args.extend(self.args)
+        kwargs.update(self.kwargs)
 
-                    return fn(*cp_args, **cp_kwargs)
+        if arity <= 0:
+            return self.fn(*args, **kwargs)
 
-                return _currier
-
-            return _currier(*args, **kwargs)
-
-        return _holder
-
-    return _decorator
+        return self.of(self.fn, arity, *args, **kwargs)
 
 
 @curry(2)
