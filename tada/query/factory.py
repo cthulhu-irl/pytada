@@ -11,9 +11,6 @@ class QueryFactory(object):
     a selector is not found.
     """
 
-    FUNC = 0
-    TYPE = 1
-
     DELIMITER = ':'
 
     def __init__(self, registry={}, default=None):
@@ -37,18 +34,10 @@ class QueryFactory(object):
         if delim in s and s.index(delim) == s.rindex(delim):
             return s.split(delim)
 
-        if not self._isinfix(s):
-            return (s, s)
+        if s in self.registry:
+            return (s, '')
 
-        return s
-
-    def _isinfix(self, x):
-        """ checks if given x is an infix string """
-        return (
-            isinstance(x, str)
-            and self.DELIMITER not in x
-            and x in self.registry
-        )
+        return (s, s)
 
     def _get_handler(self, fname):
         """
@@ -62,7 +51,7 @@ class QueryFactory(object):
     def _infix_list_composer(
         self,
         lst,
-        sofar,
+        sofar=Q(identity),
         *,
         depth=100
     ):
@@ -87,30 +76,27 @@ class QueryFactory(object):
         if not lst or depth <= 0:
             return sofar
 
-        first, *rest = lst
-        fn, ft = self._get_handler(
-            first if self._isinfix(first) else first[0]
-        )
+        (fname, farg), *rest = lst
+        fn, isinfix = self._get_handler(fname)
 
-        if self._isinfix(first):
+        if isinfix:
             sogoing = self._infix_list_composer(
-                rest, Q(identity), depth=depth-1
+                rest, depth=depth-1
             )
-            return Q(fn(ft(sofar), ft(sogoing)))
+            return Q(fn(sofar, sogoing))
 
-        fx = compose(fn, ft)
-        sofar = sofar.then(fx(first[1]))
+        sofar = sofar.then(fn(farg))
 
         return self._infix_list_composer(
             rest, sofar, depth=depth-1
         )
 
-    def register(self, fn, ft, fname=''):
+    def register(self, fn, isinfix=False, fname=''):
         """
         adds a handler (tuple(fn, ft)) to registry
         of given fname or the fn's name if fname isn't given.
         """
-        self.registry[fname or fn.__qualname__] = (fn, ft)
+        self.registry[fname or fn.__qualname__] = (fn, isinfix)
 
     def unregister(self, fname):
         """ pops fname handler out of registry """
@@ -120,8 +106,6 @@ class QueryFactory(object):
         """ makes a Query out of given query string """
         lst = map(lambda s: s.strip(), string.split())
         lst = map(self._parse_clause, lst)
-        f = self._infix_list_composer(
-            lst, Q(identity), depth=self.max_depth
-        )
+        q = self._infix_list_composer(lst, depth=self.max_depth)
 
-        return Q(f)
+        return q
