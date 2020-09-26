@@ -1,4 +1,5 @@
 from functools import cmp_to_key
+from collections import Iterable
 
 from .functional import curry
 
@@ -62,3 +63,14 @@ def unique(arr):
             unique_arr.append(item)
 
     return unique_arr
+
+def flatten(arr, sofar=[]):
+    if not arr:
+        return sofar
+
+    item, *rest = arr
+
+    if isinstance(item, Iterable):
+        return flatten(rest, flatten(item, sofar))
+
+    return flatten(rest, [*sofar, item])
