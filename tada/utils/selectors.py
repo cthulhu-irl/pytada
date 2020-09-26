@@ -64,13 +64,17 @@ def unique(arr):
 
     return unique_arr
 
-def flatten(arr, sofar=[]):
+def flatten(arr, *, sofar=[], depth=float('infinity')):
     if not arr:
         return sofar
 
     item, *rest = arr
 
-    if isinstance(item, Iterable):
-        return flatten(rest, flatten(item, sofar))
+    if isinstance(item, Iterable) and depth > 0:
+        return flatten(
+            rest,
+            sofar=flatten(item, sofar),
+            depth=depth-1
+        )
 
-    return flatten(rest, [*sofar, item])
+    return flatten(rest, sofar=[*sofar, item])
