@@ -1,5 +1,5 @@
 from tada.query.query import Query as Q
-from tada.query.factory import QueryFactory
+from tada.query.factory import QueryStringFactory
 from tada.utils.functional import identity, curry, compose
 from tada.utils.selectors import select, filter, offset, limit
 from tada.utils.constraints import contains, starts_with
@@ -12,7 +12,7 @@ handlers = {
     'startswith': (compose(select, starts_with), False),
     'filter': (compose(filter, contains), False)
 }
-qf = QueryFactory(handlers)
+qf = QueryStringFactory(handlers)
 
 def test_fromstr_default():
     q = qf.fromstr('x y')

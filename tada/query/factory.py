@@ -4,7 +4,7 @@ from ..utils.selectors import select
 from ..utils.constraints import contains
 
 
-class QueryFactory(object):
+class QueryStringFactory(object):
     """
     make query from other representations by given registry
     of selectors and a default selector for when
