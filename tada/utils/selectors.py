@@ -1,5 +1,5 @@
 from functools import cmp_to_key
-from collections import Iterable
+from collections.abc import Iterable
 
 from .functional import curry
 
