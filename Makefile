@@ -1,4 +1,7 @@
-all: build install test
+all: lint build install test
+
+lint:
+	flake8 tada/
 
 build:
 	pip3 install --user -r requirements.txt
