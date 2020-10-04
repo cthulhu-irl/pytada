@@ -1,3 +1,4 @@
+import inspect
 from typing import (
     Optional, Any, Dict, Tuple, Type, Callable, ClassVar
 )
@@ -62,8 +63,14 @@ class Section(BaseModel):
 
 class Config(BaseModel):
 
-    def __init__(self, *args: Any, **kwargs: Section) -> None:
-        super(Config, self).__init__(*args, **kwargs)
+    def __init_subclass__(cls) -> None:
+        for k, v in cls.__fields__.items():
+            # not a good way of runtime polymorphism check at all
+            if Section not in inspect.getmro(v.type_):
+                raise TypeError(
+                    f"'{k}' field is not of Section type "
+                    "or subclass, but is '{str(v)}'"
+                )
 
     @property
     def sections(self) -> Dict[str, Type[Section]]:
