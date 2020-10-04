@@ -6,12 +6,12 @@ from pydantic import BaseModel, ValidationError, validator
 from pydantic.fields import ModelField
 
 class FieldSchema(BaseModel):
-    FIELD_SCHEMA = 'field_schema'
-    TYPECONV = 'typeconv'
+    FIELD_SCHEMA: ClassVar[str] = 'field_schema'
+    TYPECONV: ClassVar[str] = 'typeconv'
 
     required: bool
     name: str
-    typeclass: type
+    typeclass: Any
     typeconv: Optional[Callable[[Any], Any]] = None
     help: Optional[str] = ''
     default: Optional[Any] = None
@@ -61,12 +61,8 @@ class Section(BaseModel):
 
 class Config(BaseModel):
 
-    def __init_subclass__(cls) -> None:
-        for name, field in cls.__fields__.items():
-            if field.type_ != Section:
-                raise TypeError(
-                    f"field '{name}' isn't a Config type"
-                )
+    def __init__(self, *args: Any, **kwargs: Section) -> None:
+        super(Config, self).__init__(*args, **kwargs)
 
     @property
     def sections(self) -> Dict[str, Type[Section]]:
