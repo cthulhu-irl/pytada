@@ -3,7 +3,7 @@ from typing import (
 )
 
 from pydantic import BaseModel, ValidationError, validator
-from pydantic.utils import ModelField
+from pydantic.fields import ModelField
 
 class FieldSchema(BaseModel):
     FIELD_SCHEMA = 'field_schema'
