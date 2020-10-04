@@ -1,6 +1,7 @@
 import enum
 from typing import Literal, ClassVar
 
+import pytest
 from pydantic import Field
 
 from tada.utils import config
@@ -50,3 +51,27 @@ def test_section_field_schema_mapping() -> None:
     assert schema.port.default == 8021
     assert schema.username.default == 'admin'
     assert schema.password.default == 'admin'
+
+def test_config_fields_section_type_enforce_with_default() -> None:
+    general_section = DefaultSection(name='test field name')
+
+    with pytest.raises(Exception) as excinfo:
+        class IllConfig(config.Config):
+            general: DefaultSection
+            something: str = 'some default to evade init enforce'
+
+        IllConfig(general=general_section)
+
+    assert excinfo
+
+def test_config_fields_section_type_enforce() -> None:
+    general_section = DefaultSection(name='test field name')
+
+    with pytest.raises(Exception) as excinfo:
+        class IllConfig(config.Config):
+            general: DefaultSection
+            something: str
+
+        IllConfig(general=general_section, something='test')
+
+    assert excinfo
