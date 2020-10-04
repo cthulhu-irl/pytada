@@ -19,6 +19,8 @@ class FieldSchema(BaseModel):
 class SectionSchema(object):
 
     def __init__(self, **fields: Dict[str, FieldSchema]):
+        self.fields = fields
+
         for k, v in fields.items():
             setattr(self, k, v)
 
