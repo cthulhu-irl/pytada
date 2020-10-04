@@ -45,12 +45,13 @@ class SectionSchema(object):
                     default=field.get_default()
                 )
 
+            ret.fields[field_name] = field_schema
             setattr(ret, field_name, field_schema)
 
         return ret
 
 class Section(BaseModel):
-    NAME: ClassVar = "default"
+    NAME: ClassVar[str] = "default"
 
     class Config:
         validate_assignment = True
