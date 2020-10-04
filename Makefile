@@ -5,8 +5,7 @@ lint:
 
 build:
 	pip3 install --user -r requirements.txt
-	pip3 install --user pytest
-	python3 ./
+	pip3 install --user pytest # dev
 
 install: build
 	python3 ./setup.py install --force --user
