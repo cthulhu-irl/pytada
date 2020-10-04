@@ -13,3 +13,8 @@ install: build
 
 test: install
 	pytest tests/
+
+clean:
+	rm .coverage
+	rm -rf .*-cache/
+	rm -rf build/ dist/ tada.egg-info/
