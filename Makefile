@@ -14,6 +14,6 @@ test: install
 	pytest tests/
 
 clean:
-	rm .coverage
+	rm -f .coverage
 	rm -rf .*-cache/
 	rm -rf build/ dist/ tada.egg-info/
