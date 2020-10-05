@@ -1,6 +1,6 @@
-import inspect
+from inspect import getmro
 from typing import (
-    Optional, Any, Dict, Tuple, Type, Callable, ClassVar
+    Optional, Any, Dict, Tuple, Type, Callable, ClassVar, List
 )
 
 from pydantic import BaseModel, ValidationError, validator
@@ -67,9 +67,13 @@ class Section(BaseModel):
 class Config(BaseModel):
 
     def __init_subclass__(cls) -> None:
+        cls.restrict_field_types([Section])
+
+    @classmethod
+    def restrict_field_types(cls, types: List[object]) -> None:
         for k, v in cls.__fields__.items():
             # not a good way of runtime polymorphism check at all
-            if Section not in inspect.getmro(v.type_):
+            if not any(t in getmro(v.type_) for t in types):
                 raise TypeError(
                     f"'{k}' field is not of Section type "
                     "or subclass, but is '{str(v)}'"
