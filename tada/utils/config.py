@@ -19,16 +19,18 @@ class FieldSchema(BaseModel):
 
 class SectionSchema(object):
 
-    def __init__(self, **fields: FieldSchema):
+    def __init__(
+        self,
+        fieldschema_factory=FieldSchema,
+        **fields: FieldSchema
+    ) -> None:
+        self.fieldschema_factory = fieldschema_factory
         self.fields = fields
 
         for k, v in fields.items():
             setattr(self, k, v)
 
-    @classmethod
-    def from_fields(cls, fields: Dict[str, ModelField]) -> 'SectionSchema':
-        ret = cls()
-
+    def from_fields(self, fields: Dict[str, ModelField]) -> 'SectionSchema':
         for field_name, field in fields.items():
             extra = field.field_info.extra
 
@@ -37,7 +39,7 @@ class SectionSchema(object):
 
             typeconv = extra.get(FieldSchema.TYPECONV, None)
             field_schema = field_schema or \
-                FieldSchema(
+                self.fieldschema_factory(
                     required=field.required,
                     name=field.field_info.title or field.name,
                     typeclass=field.type_,
@@ -46,10 +48,10 @@ class SectionSchema(object):
                     default=field.get_default()
                 )
 
-            ret.fields[field_name] = field_schema
-            setattr(ret, field_name, field_schema)
+            self.fields[field_name] = field_schema
+            setattr(self, field_name, field_schema)
 
-        return ret
+        return self
 
 class Section(BaseModel):
     NAME: ClassVar[str] = "default"
@@ -59,7 +61,8 @@ class Section(BaseModel):
 
     @classmethod
     def section_schema(cls) -> SectionSchema:
-        return SectionSchema.from_fields(cls.__fields__)
+        instance = SectionSchema(FieldSchema)
+        return SectionSchema.from_fields(instance, cls.__fields__)
 
 class Config(BaseModel):
 
