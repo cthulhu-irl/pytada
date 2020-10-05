@@ -6,6 +6,8 @@ from typing import (
 from pydantic import BaseModel, ValidationError, validator
 from pydantic.fields import ModelField
 
+from .structures import restrict_field_types
+
 class FieldSchema(BaseModel):
     FIELD_SCHEMA: ClassVar[str] = 'field_schema'
     TYPECONV: ClassVar[str] = 'typeconv'
@@ -67,17 +69,7 @@ class Section(BaseModel):
 class Config(BaseModel):
 
     def __init_subclass__(cls) -> None:
-        cls.restrict_field_types([Section])
-
-    @classmethod
-    def restrict_field_types(cls, types: List[object]) -> None:
-        for k, v in cls.__fields__.items():
-            # not a good way of runtime polymorphism check at all
-            if not any(t in getmro(v.type_) for t in types):
-                raise TypeError(
-                    f"'{k}' field is not of Section type "
-                    "or subclass, but is '{str(v)}'"
-                )
+        restrict_field_types(cls, [Section])
 
     @property
     def sections(self) -> Dict[str, Type[Section]]:
