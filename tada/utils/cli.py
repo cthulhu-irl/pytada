@@ -35,7 +35,7 @@ class Command(Section):
         instance = SectionSchema(Option)
         return SectionSchema.from_fields(instance, cls.__fields__)
 
-class CLI(Command):
+class CLI(BaseModel):
 
     def __init_subclass__(cls) -> None:
         restrict_field_types(cls, [Command])
