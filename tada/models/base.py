@@ -1,9 +1,9 @@
 import json
 from typing import Any, Dict
 
-from ..conversion import RAWConvertable, JSONConvertable
-from ..utils.structures import BaseModel
+from pydantic import BaseModel
 
+from ..conversion import RAWConvertable, JSONConvertable
 
 class ConvertableModel(BaseModel, RAWConvertable, JSONConvertable):
     """
