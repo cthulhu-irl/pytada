@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 
-from .config import Section
-
-class Command(Section):
+class Command(BaseModel):
     pass
 
 class CLI(BaseModel):
