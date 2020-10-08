@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 class ARGVCLIParser(object):
 
-    def __init__(self, cli_factory: Type['CLI'], prog: str = ''):
+    def __init__(self, klass: Type['CLI'], prog: str = ''):
         pass
 
     def parse(self, argv: List[str]) -> 'CLI':
