@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from typing import List
 
 import pytest
@@ -11,7 +11,7 @@ class MandatorySection(Section):
     authors: List[str]
 
 class SubSection(Section):
-    date: datetime = Field(default_factory=datetime.now)
+    date: datetime.date = Field(default_factory=datetime.datetime.now)
 
 class OptionalSection(Section):
     magic_num: int = 0
@@ -55,7 +55,8 @@ def test_all_fields_valid():
     assert config.optional.groups == [
         ["Baby Driver"], ["Hitchhiker"], ["debi", "music"]
     ]
-    assert config.optional.release.date == datetime(2017, 1, 1)
+    dt = datetime.date(2017, 1, 1)
+    assert config.optional.release.date == dt
 
 def test_missing_optoinal_subsection_field():
     toml = """
