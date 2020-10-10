@@ -88,36 +88,10 @@ def test_missing_mandatory_section_field():
     with pytest.raises(ValidationError):
         TOMLConfigParser.parse(SomeConfig, toml)
 
-def test_unknown_section_in_toml():
-    toml = """
-    [mandatory]
-    name = "Sutter Island"
-    authors = ["Dennis Lehane"]
-
-    [movie]
-    name = "Sutter Island"
-    director = ["Martin Scorsese"]
-    """
-
-    with pytest.raises(ValidationError):
-        TOMLConfigParser.parse(SomeConfig, toml)
-
-
 def test_missing_field():
     toml = """
     [mandatory]
     name = "Red Dragon"
-    """
-
-    with pytest.raises(ValidationError):
-        TOMLConfigParser.parse(SomeConfig, toml)
-
-
-def test_unknown_field_in_section_in_toml():
-    toml = """
-    [mandatory]
-    name = "Red Dragon"
-    author = "Thomas Harris"
     """
 
     with pytest.raises(ValidationError):
