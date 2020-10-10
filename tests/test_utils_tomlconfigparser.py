@@ -15,7 +15,7 @@ class SubSection(Section):
 
 class OptionalSection(Section):
     magic_num: int = 0
-    groups: List[List[str]]
+    groups: List[List[str]] = Field(default_factory=list)
     release: SubSection = Field(default_factory=SubSection)
 
 class SomeConfig(Config):
@@ -49,7 +49,7 @@ def test_all_fields_valid():
     date = "2017-1-1"
     """
 
-    config = TOMLConfigParser(SomeConfig, toml)
+    config = TOMLConfigParser.parse(SomeConfig, toml)
 
     assert config.mandatory.name == "Baby Driver"
     assert config.optional.groups == [
