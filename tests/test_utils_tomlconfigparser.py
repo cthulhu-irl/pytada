@@ -96,3 +96,23 @@ def test_missing_field():
 
     with pytest.raises(ValidationError):
         TOMLConfigParser.parse(SomeConfig, toml)
+
+def test_parse_unparse_must_equal():
+    toml = """
+    [mandatory]
+    name = "Baby Driver"
+    authors = ["Jan Krouac"]
+
+    [optional]
+    magic_num = 42
+    groups = [["Baby Driver"], ["Hitchhiker"], ["debi", "music"]]
+
+    [optional.release]
+    date = "2017-1-1"
+    """
+
+    config = TOMLConfigParser.parse(SomeConfig, toml)
+    unparsed_toml = TOMLConfigParser.unparse(config)
+    reconfig = TOMLConfigParser.parse(SomeConfig, unparsed_toml)
+
+    assert config == reconfig
