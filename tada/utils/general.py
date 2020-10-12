@@ -1,5 +1,10 @@
 from .functional import identity, curry
 
+def exceptioner(fn, fn_fail, *args, **kwargs):
+    try:
+        return fn(*args, **kwargs)
+    except Exception as exc:
+        return fn_fail(exc)
 
 @curry(3)
 def and_fn(fx, fy, a, *args, **kwargs):
