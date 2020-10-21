@@ -70,6 +70,9 @@ class Todo(Model):
         if not todo.sublist:
             return todo
 
+        # to avoid mutation
+        todo = todo.copy(deep=True)
+
         todo.sublist = [
             child.fix_status() for child in todo.sublist
         ]
