@@ -1,5 +1,5 @@
 from .base import LogicallyComposable
-from ..utils.functional import identity, compose
+from ..utils.functional import identity, pipe
 
 
 class Query(LogicallyComposable):
@@ -12,16 +12,15 @@ class Query(LogicallyComposable):
     with only one argument
     """
 
-    def __init__(self, selector=identity, *, composer=compose):
+    def __init__(self, selector=identity):
         self.fn = selector
-        self.composer = composer
 
     # syntactic sugar
 
     def __call__(self, obj):
         return self.query(obj)
 
-    def __lshift__(self, selector):
+    def __rshift__(self, selector):
         return self.then(selector)
 
     # functor
@@ -39,7 +38,7 @@ class Query(LogicallyComposable):
         compose the given selector with inner selector
         and return a new instance
         """
-        return self.map(self.composer(selector))
+        return self.map(pipe(selector))
 
     def query(self, obj):
         """ apply the inner query on given obj """
