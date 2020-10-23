@@ -56,12 +56,8 @@ def compose(f, g, *fns):
     return _composed
 
 
-@curry(2)
-def pipe(f, g, *fns):
-    def _piped(*args, **kwargs):
-        return g(f(*args, **kwargs))
-
-    return pipe(_piped, *fns)
+def pipe(*fns):
+    return compose(*fns[::-1])
 
 
 @curry(2)
