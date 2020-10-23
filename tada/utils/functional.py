@@ -57,6 +57,14 @@ def compose(f, g, *fns):
 
 
 @curry(2)
+def pipe(f, g, *fns):
+    def _piped(*args, **kwargs):
+        return g(f(*args, **kwargs))
+
+    return pipe(_piped, *fns)
+
+
+@curry(2)
 def fmap(fn, obj):
     """
     maps the given obj to given fn through obj's map method
